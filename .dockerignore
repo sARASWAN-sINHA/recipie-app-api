@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+.docker
+
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+
+# Virtual environment
+.env
+.venv/
+venv/
+
+# VS Code
+.vscode/
+
+# Django stuff:
+*.log
