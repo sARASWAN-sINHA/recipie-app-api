@@ -7,7 +7,7 @@ from django.db.utils import OperationalError
 from django.core.management import call_command
 
 
-@patch("app.core.management.commands.wait_for_db.Command.check")
+@patch("core.management.commands.wait_for_db.Command.check")
 class CommandTest(SimpleTestCase):
     """Test commands."""
 
