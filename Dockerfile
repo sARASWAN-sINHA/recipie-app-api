@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.9-alpine3.13
 LABEL maintainer="srs1206"
 
 ENV PYTHONUNBUFFERED=1
