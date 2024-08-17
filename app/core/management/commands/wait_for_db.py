@@ -22,7 +22,10 @@ class Command(BaseCommand):
                 self.check(databases=["default"])
                 db_up = True
             except (Psycopg2OpError, OperationalError):
-                self.stdout.write("Database connection failed!! Waiting for 1 sec...")
+                self.stdout.write(
+                    "Database connection failed!! \
+                                  Waiting for 1 sec..."
+                )
                 time.sleep(1)
         self.stdout.write(
             self.style.SUCCESS("Database connection established!")
