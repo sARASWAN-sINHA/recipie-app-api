@@ -24,7 +24,7 @@ class Command(BaseCommand):
             except (Psycopg2OpError, OperationalError):
                 self.stdout.write(
                     "Database connection failed!! \
-                                  Waiting for 1 sec..."
+                    Waiting for 1 sec..."
                 )
                 time.sleep(1)
         self.stdout.write(
