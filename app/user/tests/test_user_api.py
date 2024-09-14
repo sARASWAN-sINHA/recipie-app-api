@@ -13,6 +13,7 @@ from django.urls import reverse
 
 
 USER_CREATE_URL = reverse("user:create")
+TOKEN_CREATE_URL = reverse("user:token")
 
 
 def create_user(**params):
@@ -65,3 +66,56 @@ class PublicUserApiTest(TestCase):
         self.assertFalse(
             get_user_model().objects.filter(email=payload.get("email")).exists()
         )
+
+    def test_create_token_for_user(self):
+        user_create_credentials = {
+            "email": "test123@gmail.com",
+            "password": "test12345",
+            "name": "SRS1206",
+        }
+        user = create_user(**user_create_credentials)
+
+        payload = {
+            "email": "test123@gmail.com",
+            "password": "test12345",
+        }
+
+        res = self.client.post(TOKEN_CREATE_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn("token", res.data)
+
+    def test_create_token_bad_credentials(self):
+        user_create_credentials = {
+            "email": "test123@gmail.com",
+            "password": "test12345",
+            "name": "SRS1206",
+        }
+        user = create_user(**user_create_credentials)
+
+        payload = {
+            "email": "test123@gmail.com",
+            "password": "test123",
+        }
+
+        res = self.client.post(TOKEN_CREATE_URL, payload)
+        print(res)
+        print(res.data)
+        self.assertEqual(res.data.get("detail").code, status.HTTP_400_BAD_REQUEST)
+        self.assertNotIn("token", res.data)
+
+    def test_create_token_blank_password(self):
+        user_create_credentials = {
+            "email": "test123@gmail.com",
+            "password": "test12345",
+            "name": "SRS1206",
+        }
+        user = create_user(**user_create_credentials)
+
+        payload = {
+            "email": "test123@gmail.com",
+            "password": "",
+        }
+
+        res = self.client.post(TOKEN_CREATE_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertNotIn("token", res.data)
