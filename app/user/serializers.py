@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 
+
 class UserSerializer(ModelSerializer):
     """
     Serialzier for creating user object.
@@ -27,13 +28,15 @@ class UserSerializer(ModelSerializer):
         }
 
     def update(self, instance, validated_data):
+        """Update and return user."""
         password = validated_data.pop("password", None)
         user = super().update(instance, validated_data)
+
         if password:
             user.set_password(password)
             user.save()
-        return user
 
+        return user
 
 
 class CustomAuthtokenSerializer(Serializer):

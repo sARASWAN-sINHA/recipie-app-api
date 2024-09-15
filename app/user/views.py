@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import authentication, permissions
+
 
 
 from django.contrib.auth import get_user_model
@@ -31,11 +32,14 @@ class UserApiView(generics.GenericAPIView):
         return Response(data=serialized_data.data, status=status.HTTP_201_CREATED)
 
 
-class ManageUserApiView(generics.RetrieveUpdateAPIView):
+class ManageUserView(generics.RetrieveUpdateAPIView):
+    """Manage the authenticated user."""
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
+        """Retrieve and return the authenticated user."""
         return self.request.user
 
 class CustomAuthTokenView(ObtainAuthToken):
